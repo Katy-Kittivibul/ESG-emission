@@ -35,3 +35,4 @@ cache/         — Parquet cache files (gitignored)
 - [x] Phase B: pytest suite — 71 tests, 36% coverage. conftest.py fixtures. test_emissions_calc.py (19), test_data_fetcher.py (14), test_forecasting.py (16), test_scenarios.py (22), test_integration.py (4).
 - [x] Phase C: Dockerised. Dockerfile (python:3.11-slim, build-essential, libgomp1). docker-compose.yml with healthcheck + volume persistence. App runs on host=0.0.0.0:8050, debug=False. Ready for Render.
 - [x] Phase D: CI/CD Pipeline. GitHub Actions (.github/workflows/ci.yml): test → build → deploy to Render on main push. render.yaml configured. README.md comprehensive rewrite with badges, features, architecture, methodology, deployment steps.
+- [x] Phase D Complete: Pushed to GitHub, CI/CD live. Benchmark verified: 0.01% for 10,000 tCO2e vs 100 MtCO2e UK ENE. Ready for Render deployment.
