@@ -1,0 +1,36 @@
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs, text editors and tools
+.idea/
+.vscode/
+*.swp
+*.swo
+.claude/
+.claude*
+.gemini/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Project-specific caches and data files
+esg_dashboard/cache/
+esg_dashboard/data/__pycache__/
+esg_dashboard/analytics/__pycache__/
+esg_dashboard/components/__pycache__/
+
+# Local environment variables
+.env
+.env.local
+.env.*

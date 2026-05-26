@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: esg-carbon-dashboard
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: DEBUG
+        value: "False"
+    healthCheckPath: /
+    autoDeploy: false
