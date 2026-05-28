@@ -30,6 +30,11 @@ esg_dashboard/data/__pycache__/
 esg_dashboard/analytics/__pycache__/
 esg_dashboard/components/__pycache__/
 
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
 # Local environment variables
 .env
 .env.local

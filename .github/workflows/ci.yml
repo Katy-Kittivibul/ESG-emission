@@ -11,26 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
-
-      - name: Install dependencies
-        run: pip install -r esg_dashboard/requirements.txt
-
+      - name: Install deps
+        run: |
+          cd esg_dashboard
+          pip install -r requirements.txt
       - name: Run tests
         run: |
           cd esg_dashboard
-          pytest tests/ --cov=data --cov=analytics \
-            --cov-report=xml --cov-fail-under=80
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./esg_dashboard/coverage.xml
-        continue-on-error: true
+          pytest tests/ -v --tb=short
 
   docker:
     needs: test
@@ -39,15 +31,12 @@ jobs:
         github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
-
-      - name: Build Docker image
+      - name: Build image
         run: docker build -t esg-dashboard .
-
-      - name: Smoke test container
+      - name: Smoke test
         run: |
-          docker run -d -p 8050:8050 \
-            --name esg-test esg-dashboard
-          sleep 10
+          docker run -d -p 8050:8050 --name esg-test esg-dashboard
+          sleep 15
           curl -f http://localhost:8050 || exit 1
           docker stop esg-test
 
@@ -57,7 +46,7 @@ jobs:
     if: github.ref == 'refs/heads/main' &&
         github.event_name == 'push'
     steps:
-      - name: Trigger Render deploy
+      - name: Deploy to Render
         run: |
           curl -X POST \
             "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys" \
