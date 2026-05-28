@@ -12,65 +12,51 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
 
       - name: Install dependencies
-        run: |
-          cd esg_dashboard
-          pip install --upgrade pip
-          pip install -r requirements.txt
+        run: pip install -r esg_dashboard/requirements.txt
 
       - name: Run tests
         run: |
           cd esg_dashboard
-          pytest tests/ \
-            --cov=data \
-            --cov=analytics \
-            --cov-report=xml \
-            --cov-report=term \
-            --cov-fail-under=30 \
-            -v
+          pytest tests/ --cov=data --cov=analytics \
+            --cov-report=xml --cov-fail-under=80
 
-      - name: Upload coverage to Codecov
+      - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
           file: ./esg_dashboard/coverage.xml
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
         continue-on-error: true
 
-  build:
-    runs-on: ubuntu-latest
+  docker:
     needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' &&
+        github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image
-        run: |
-          cd esg_dashboard/..
-          docker build -t esg-dashboard:${{ github.sha }} .
-          docker tag esg-dashboard:${{ github.sha }} esg-dashboard:latest
+        run: docker build -t esg-dashboard .
 
-      - name: Verify image
+      - name: Smoke test container
         run: |
-          docker image inspect esg-dashboard:latest
-          docker run --rm esg-dashboard:latest python -m pytest --version
+          docker run -d -p 8050:8050 \
+            --name esg-test esg-dashboard
+          sleep 10
+          curl -f http://localhost:8050 || exit 1
+          docker stop esg-test
 
   deploy:
-    needs: [test, build]
+    needs: docker
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' &&
+        github.event_name == 'push'
     steps:
-      - uses: actions/checkout@v4
-
       - name: Trigger Render deploy
         run: |
           curl -X POST \
@@ -78,4 +64,3 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
             -H "Content-Type: application/json" \
             -d '{}'
-        continue-on-error: true
