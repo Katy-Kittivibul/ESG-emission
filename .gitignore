@@ -1,41 +1,42 @@
-# Python compiled files
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-
-# Virtual environments
+# Python
 .venv/
-venv/
-ENV/
-env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
 
-# IDEs, text editors and tools
-.idea/
-.vscode/
-*.swp
-*.swo
-.claude/
-.claude*
-.gemini/
+# Cache + data
+cache/
+*.parquet
 
-# OS files
-.DS_Store
-Thumbs.db
-desktop.ini
+# Environment
+.env
+.env.*
 
-# Project-specific caches and data files
-esg_dashboard/cache/
-esg_dashboard/data/__pycache__/
-esg_dashboard/analytics/__pycache__/
-esg_dashboard/components/__pycache__/
-
-# Testing and coverage
+# Testing
 .pytest_cache/
 .coverage
+coverage.xml
 htmlcov/
 
-# Local environment variables
-.env
-.env.local
-.env.*
+# IDE
+.vscode/
+.idea/
+.claude/
+.claude*
+*.swp
+*.swo
+.DS_Store
+
+# Project planning (not for repo)
+CLAUDE.md
+
+# Docker
+*.tar
+
+# Logs
+*.log

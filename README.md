@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker](https://img.shields.io/badge/docker-enabled-blue.svg)](https://www.docker.com/)
 [![Tests](https://img.shields.io/badge/tests-71%20passing-brightgreen.svg)]()
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://esg-carbon-dashboard.onrender.com)
+[![Run with Docker](https://img.shields.io/badge/run-docker-blue)](https://github.com)
 
 ---
 
@@ -31,6 +31,9 @@ UK mandatory ESG reporting ([FCA PS22/24](https://www.fca.org.uk/news/news-stori
 - **Sector Benchmarking** — Compare against UK sector totals (EDGAR v8)
 - **Real UK Data** — Live ONS energy consumption, grid carbon intensity
 - **Data Caching** — 24h Parquet cache for instant reload
+
+## Dashboard preview
+![ESG Carbon Analytics Dashboard](docs/benchmark_full.png)
 
 ---
 
@@ -163,37 +166,6 @@ pytest tests/ --cov=data --cov=analytics --cov-report=html
 
 ---
 
-## Deployment to Render
-
-### Step 1: Fork Repository
-```bash
-git clone https://github.com/YOUR_USERNAME/esg-dashboard.git
-cd esg-dashboard
-git push -u origin main
-```
-
-### Step 2: Create Render Service
-1. Visit [render.com](https://render.com)
-2. Create Web Service → Connect GitHub
-3. Select this repository
-4. **Configure**:
-   - **Name**: `esg-carbon-dashboard`
-   - **Runtime**: Docker
-   - **Start Command**: `python app.py`
-
-### Step 3: Set Secrets (for CI/CD auto-deploy)
-In GitHub repository settings → **Secrets and variables**:
-- `RENDER_SERVICE_ID`
-- `RENDER_API_KEY`
-
-### Step 4: Deploy
-```bash
-git push origin main
-# → GitHub Actions triggers → Tests → Docker build → Render deploys
-```
-
----
-
 ## Tech Stack
 
 | Category | Technology |
@@ -205,7 +177,6 @@ git push origin main
 | **Forecasting** | Prophet (Meta), scikit-learn |
 | **Containerization** | Docker, docker-compose |
 | **CI/CD** | GitHub Actions |
-| **Deployment** | Render |
 | **Testing** | pytest, coverage |
 
 ---
